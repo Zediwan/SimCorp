@@ -54,6 +54,9 @@ class SimulationGUI:
         self.simulation.run()
         
         for company_frame in self.company_frames:
-            company_frame.update()
+            if company_frame.company.money <= 0:
+                self.company_frames.remove(company_frame)
+            else:
+                company_frame.update()
         
-        self.root.after(1000, self.update_gui)
+        self.root.after(1, self.update_gui)

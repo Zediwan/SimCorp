@@ -35,12 +35,11 @@ class Person(Moneyholder):
         
         # Produce goods
         produced_goods: int = math.floor(random.random() * self.proficency)
+
         self.company.num_products += produced_goods
-        self.logger.info(f"{self.name} produced {produced_goods} goods")
         # Gain experience
-        xp = produced_goods / (self.proficency * 10)
+        xp = (produced_goods + 1) / (self.proficency * 10)
         self.proficency += xp
-        self.logger.info(f"{self.name} gained {xp} experience")
 
     def buy(self):
         # Decide what to buy

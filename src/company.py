@@ -29,13 +29,16 @@ class Company(Moneyholder):
         self.employees.remove(person)
         person.salary = 0.0
         person.company = None
-        self.logger.info(f"Fired {person.name}")
+        self.logger.info(f"{self.name} fired {person.name}")
     
     def sell(self):
-        pass
+        amount_sold = random.randint(0, self.num_products)
+        self.num_products -= amount_sold
+        self.gain_money(amount_sold * random.random() * 100)
     
     def update(self):
         self.pay_employees()
+        self.sell()
     
     def pay_employees(self):
         for employee in self.employees:
@@ -44,5 +47,9 @@ class Company(Moneyholder):
                 employee.gain_money(employee.salary)
                 self.logger.info(f"Paid {employee.name} salary {employee.salary}")
             except NotEnoughMoneyException as e:
+                self.money = 0
                 self.logger.error(f"Failed to pay {employee.name}: {e}")
                 self.fire(employee)
+
+    def __str__(self):
+        return self.name

@@ -29,8 +29,7 @@ class Simulation:
         for company in self.companies:
             if company.money <= 0:
                 for employee in company.employees:
-                    employee.company = None
-                    employee.salary = 0.0
+                    company.fire(employee)
                 self.companies.remove(company)
                 self.logger.info(f"Company {company.name} went bankrupt")
                 continue
@@ -39,6 +38,8 @@ class Simulation:
                 unemployed_people = [person for person in self.people if person.company is None]
                 if len(unemployed_people) > 0:
                     company.hire(random.choice(unemployed_people), random.random() * 1000)
+
+            company.update()
         
         for person in self.people:
             person.update()
