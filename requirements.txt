@@ -1,0 +1,3 @@
+tkinter
+faker # for creating random names
+random
