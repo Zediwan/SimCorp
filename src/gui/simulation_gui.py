@@ -57,8 +57,3 @@ class SimulationGUI:
             company_frame.update()
         
         self.root.after(1000, self.update_gui)
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = SimulationGUI(root)
-    root.mainloop()
