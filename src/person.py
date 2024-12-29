@@ -44,22 +44,31 @@ class Person(Moneyholder):
         self.proficency += xp
 
     def look_for_job_or_found_company(self):
-        if self.money >= 5000:  # Threshold to found a company
+        if (self.money >= (Company.CREATION_COST * 2)) and random.random() < 0.01:  # Threshold to found a company
             self.found_company()
         else:
             # Logic to look for a job
             pass
 
     def found_company(self):
-        new_company = Company(logger=self.logger, simulation=self.simulation)
+        self.spend_money(Company.CREATION_COST)
+        starting_funds: float = random.randint(0, math.floor(self.money))
+        self.spend_money(starting_funds)
+
+        new_company = Company(logger=self.logger, simulation=self.simulation, money=starting_funds, founder=self)
         self.simulation.add_company(new_company)
-        self.company = new_company
-        self.spend_money(500)  # Deduct the money used to found the company
+
         self.logger.info(f"{self.name} founded a new company {new_company.name}")
+
+    def join_company(self, company: Company, salary: float):
+        self.company = company
+        self.salary = salary
+        self.simulation.unemployed_people.remove(self)
 
     def leave_company(self):
         self.company = None
         self.salary = 0.0
+        self.simulation.unemployed_people.append(self)
 
     def buy(self):
         # Decide what to buy

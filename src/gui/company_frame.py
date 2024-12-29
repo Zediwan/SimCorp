@@ -10,6 +10,13 @@ class CompanyFrame(ttk.Frame):
         self.name_label = ttk.Label(self, text=f"Name: {self.company.name}")
         self.name_label.pack(anchor=tk.W)
         
+        if self.company.founder:
+            self.founder_label = ttk.Label(self, text=f"Founder: {self.company.founder.name}")
+            self.founder_label.pack(anchor=tk.W)
+        else:
+            self.founder_label = ttk.Label(self, text="Founder: None")
+            self.founder_label.pack(anchor=tk.W)
+
         self.employees_label = ttk.Label(self, text=f"Employees: {len(self.company.employees)}")
         self.employees_label.pack(anchor=tk.W)
         
