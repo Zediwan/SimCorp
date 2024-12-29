@@ -37,7 +37,8 @@ class Simulation:
             if random.random() < 0.1:
                 unemployed_people = [person for person in self.people if person.company is None]
                 if len(unemployed_people) > 0:
-                    company.hire(random.choice(unemployed_people), random.random() * 1000)
+                    choice: Person = random.choice(unemployed_people)
+                    company.hire(choice, random.random() * 100 * choice.proficency)
 
             company.update()
         
