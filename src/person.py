@@ -1,7 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from .company import Company
+    from .simulation import Simulation
+
+from .company import Company
 
 from .helper.moneyholder import Moneyholder
 from .helper.faker import faker
@@ -11,8 +13,9 @@ import random
 import math
 
 class Person(Moneyholder):
-    def __init__(self, logger: Logger):
+    def __init__(self, logger: Logger, simulation: Simulation):
         self.logger = logger
+        self.simulation = simulation
         self.name = faker.name()
         self.birthday = faker.date_of_birth()
         self.money: float = 0.0
@@ -25,8 +28,7 @@ class Person(Moneyholder):
         if self.company:
             self.work()
         else:
-            # look for a job
-            pass
+            self.look_for_job_or_found_company()
         self.buy()
 
     def work(self):
@@ -40,6 +42,24 @@ class Person(Moneyholder):
         # Gain experience
         xp = (produced_goods + 1) / (self.proficency * 10)
         self.proficency += xp
+
+    def look_for_job_or_found_company(self):
+        if self.money >= 5000:  # Threshold to found a company
+            self.found_company()
+        else:
+            # Logic to look for a job
+            pass
+
+    def found_company(self):
+        new_company = Company(logger=self.logger, simulation=self.simulation)
+        self.simulation.add_company(new_company)
+        self.company = new_company
+        self.spend_money(500)  # Deduct the money used to found the company
+        self.logger.info(f"{self.name} founded a new company {new_company.name}")
+
+    def leave_company(self):
+        self.company = None
+        self.salary = 0.0
 
     def buy(self):
         # Decide what to buy

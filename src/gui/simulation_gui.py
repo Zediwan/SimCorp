@@ -53,10 +53,15 @@ class SimulationGUI:
     def update_gui(self):
         self.simulation.run()
         
+        for company in self.simulation.new_companies:
+            company_frame = CompanyFrame(self.scrollable_frame, company)
+            company_frame.pack(fill=tk.BOTH, expand=True)
+            self.company_frames.append(company_frame)
+            self.simulation.new_companies.remove(company)
+
         for company_frame in self.company_frames:
             if company_frame.company.money <= 0:
                 self.company_frames.remove(company_frame)
-                self.simulation.companies.remove(company_frame.company)
                 company_frame.destroy()
             else:
                 company_frame.update()
