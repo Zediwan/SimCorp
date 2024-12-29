@@ -30,7 +30,7 @@ class Simulation:
             if company.money <= 0:
                 for employee in company.employees:
                     company.fire(employee)
-                self.companies.remove(company)
+                #self.companies.remove(company)
                 self.logger.info(f"Company {company.name} went bankrupt")
                 continue
             
